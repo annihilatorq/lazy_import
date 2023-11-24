@@ -11,7 +11,7 @@ LI(int, MessageBoxA).call(nullptr, "Hello world.", "Goodbye world...", MB_OK);
 ```
 
 > [!IMPORTANT]\
-> With this call you can call absolutely any export from the DLL module you need, this is useful for conveniently calling undocumented functions.
+> With this importer you can call absolutely any export from the DLL module you need, this is useful for conveniently calling undocumented functions.
 
 ## Detailed example
 
