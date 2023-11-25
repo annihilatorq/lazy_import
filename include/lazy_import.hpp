@@ -59,62 +59,62 @@ namespace lazy_import {
 	namespace PE
 	{
 		struct UNICODE_STRING {
-			unsigned short  Length;
-			unsigned short  MaximumLength;
-			wchar_t* Buffer;
+			unsigned short length;
+			unsigned short maximum_length;
+			wchar_t* buffer;
 		};
 
 		typedef struct _LIST_ENTRY {
-			struct _LIST_ENTRY* Flink;
-			struct _LIST_ENTRY* Blink;
+			struct _LIST_ENTRY* flink;
+			struct _LIST_ENTRY* blink;
 		} LIST_ENTRY, * PLIST_ENTRY, * PRLIST_ENTRY;
 
 		typedef struct _LDR_DATA_TABLE_ENTRY {
-			LIST_ENTRY InLoadOrderLinks;
-			LIST_ENTRY InMemoryOrderLinks;
-			void* Reserved2[2];
-			void* DllBase;
-			void* EntryPoint;
-			void* Reserved3;
-			UNICODE_STRING FullDllName;
-			UNICODE_STRING BaseDllName;
-			void* Reserved5[3];
+			LIST_ENTRY in_load_order_links;
+			LIST_ENTRY in_memory_order_links;
+			void* reserved2[2];
+			void* dll_base;
+			void* entry_point;
+			void* reserved3;
+			UNICODE_STRING full_dll_name;
+			UNICODE_STRING base_dll_name;
+			void* reserved5[3];
 			union {
-				unsigned long CheckSum;
-				void* Reserved6;
+				unsigned long check_sum;
+				void* reserved6;
 			};
-			unsigned long          TimeDateStamp;
+			unsigned long          time_date_stamp;
 		} LDR_DATA_TABLE_ENTRY, * PLDR_DATA_TABLE_ENTRY;
 
 		typedef struct _PEB_LDR_DATA {
-			unsigned long Length;
-			unsigned char Initialized;
-			void* SsHandle;
-			LIST_ENTRY InLoadOrderModuleList;
-			LIST_ENTRY InMemoryOrderModuleList;
-			LIST_ENTRY InInitializationOrderModuleList;
+			unsigned long length;
+			unsigned char initialized;
+			void* ss_handle;
+			LIST_ENTRY in_load_order_module_list;
+			LIST_ENTRY in_memory_order_module_list;
+			LIST_ENTRY in_initialization_order_module_list;
 		} PEB_LDR_DATA, * PPEB_LDR_DATA;
 
 		struct PEB {
-			unsigned char   Reserved1[2];
-			unsigned char   BeingDebugged;
-			unsigned char   Reserved2[1];
-			const char*		Reserved3[2];
-			PEB_LDR_DATA*	LoaderData;
+			unsigned char   reserved1[2];
+			unsigned char   being_debugged;
+			unsigned char   reserved2[1];
+			const char*		reserved3[2];
+			PEB_LDR_DATA*	loader_data;
 		};
 
 		typedef struct _IMAGE_EXPORT_DIRECTORY {
-			unsigned long  Characteristics;
-			unsigned long  TimeDateStamp;
-			unsigned short MajorVersion;
-			unsigned short MinorVersion;
-			unsigned long  Name;
-			unsigned long  Base;
-			unsigned long  NumberOfFunctions;
-			unsigned long  NumberOfNames;
-			unsigned long  AddressOfFunctions; // RVA from base of image
-			unsigned long  AddressOfNames; // RVA from base of image
-			unsigned long  AddressOfNameOrdinals; // RVA from base of image
+			unsigned long  characteristics;
+			unsigned long  time_date_stamp;
+			unsigned short major_version;
+			unsigned short minor_version;
+			unsigned long  name;
+			unsigned long  base;
+			unsigned long  number_of_functions;
+			unsigned long  number_of_names;
+			unsigned long  address_of_functions; // RVA from base of image
+			unsigned long  address_of_names; // RVA from base of image
+			unsigned long  address_of_name_ordinals; // RVA from base of image
 		} IMAGE_EXPORT_DIRECTORY, * PIMAGE_EXPORT_DIRECTORY;
 
 		struct IMAGE_DOS_HEADER { // DOS .EXE header
@@ -140,85 +140,85 @@ namespace lazy_import {
 		};
 
 		struct IMAGE_FILE_HEADER {
-			unsigned short Machine;
-			unsigned short NumberOfSections;
-			unsigned long  TimeDateStamp;
-			unsigned long  PointerToSymbolTable;
-			unsigned long  NumberOfSymbols;
-			unsigned short SizeOfOptionalHeader;
-			unsigned short Characteristics;
+			unsigned short machine;
+			unsigned short number_of_sections;
+			unsigned long  time_date_stamp;
+			unsigned long  pointer_to_symbol_table;
+			unsigned long  number_of_symbols;
+			unsigned short size_of_optional_header;
+			unsigned short characteristics;
 		};
 
 		struct IMAGE_DATA_DIRECTORY {
-			unsigned long VirtualAddress;
-			unsigned long Size;
+			unsigned long virtual_address;
+			unsigned long size;
 		};
 
 		typedef struct _IMAGE_OPTIONAL_HEADER64 {
-			unsigned short Magic;
-			unsigned char MajorLinkerVersion;
-			unsigned char MinorLinkerVersion;
-			unsigned long SizeOfCode;
-			unsigned long SizeOfInitializedData;
-			unsigned long SizeOfUninitializedData;
-			unsigned long AddressOfEntryPoint;
-			unsigned long BaseOfCode;
-			unsigned long long ImageBase;
-			unsigned long SectionAlignment;
-			unsigned long FileAlignment;
-			unsigned short MajorOperatingSystemVersion;
-			unsigned short MinorOperatingSystemVersion;
-			unsigned short MajorImageVersion;
-			unsigned short MinorImageVersion;
-			unsigned short MajorSubsystemVersion;
-			unsigned short MinorSubsystemVersion;
-			unsigned long Win32VersionValue;
-			unsigned long SizeOfImage;
-			unsigned long SizeOfHeaders;
-			unsigned long CheckSum;
-			unsigned short Subsystem;
-			unsigned short DllCharacteristics;
-			unsigned long long SizeOfStackReserve;
-			unsigned long long SizeOfStackCommit;
-			unsigned long long SizeOfHeapReserve;
-			unsigned long long SizeOfHeapCommit;
-			unsigned long LoaderFlags;
-			unsigned long NumberOfRvaAndSizes;
-			IMAGE_DATA_DIRECTORY DataDirectory[16];
+			unsigned short magic;
+			unsigned char major_linker_version;
+			unsigned char minor_linker_version;
+			unsigned long size_of_code;
+			unsigned long size_of_initialized_data;
+			unsigned long size_of_uninitialized_data;
+			unsigned long address_of_entry_point;
+			unsigned long base_of_code;
+			unsigned long long image_base;
+			unsigned long section_alignment;
+			unsigned long file_alignment;
+			unsigned short major_operating_system_version;
+			unsigned short minor_operation_system_version;
+			unsigned short major_image_version;
+			unsigned short minor_image_version;
+			unsigned short major_subsystem_version;
+			unsigned short minor_subsystem_version;
+			unsigned long win32_version_value;
+			unsigned long size_of_image;
+			unsigned long size_of_headers;
+			unsigned long check_sum;
+			unsigned short subsystem;
+			unsigned short dll_characteristics;
+			unsigned long long size_of_stack_reserve;
+			unsigned long long size_of_stack_commit;
+			unsigned long long size_of_heap_reserve;
+			unsigned long long size_of_heap_commit;
+			unsigned long loader_flags;
+			unsigned long number_of_rva_and_sizes;
+			IMAGE_DATA_DIRECTORY data_directory[16];
 		} IMAGE_OPTIONAL_HEADER64, * PIMAGE_OPTIONAL_HEADER64;
 
 		typedef struct _IMAGE_OPTIONAL_HEADER32 {
-			unsigned short       Magic;
-			unsigned char        MajorLinkerVersion;
-			unsigned char        MinorLinkerVersion;
-			unsigned long        SizeOfCode;
-			unsigned long        SizeOfInitializedData;
-			unsigned long        SizeOfUninitializedData;
-			unsigned long        AddressOfEntryPoint;
-			unsigned long        BaseOfCode;
-			unsigned long        BaseOfData;
-			unsigned long        ImageBase;
-			unsigned long        SectionAlignment;
-			unsigned long        FileAlignment;
-			unsigned short       MajorOperatingSystemVersion;
-			unsigned short       MinorOperatingSystemVersion;
-			unsigned short       MajorImageVersion;
-			unsigned short       MinorImageVersion;
-			unsigned short       MajorSubsystemVersion;
-			unsigned short       MinorSubsystemVersion;
-			unsigned long        Win32VersionValue;
-			unsigned long        SizeOfImage;
-			unsigned long        SizeOfHeaders;
-			unsigned long        CheckSum;
-			unsigned short       Subsystem;
-			unsigned short       DllCharacteristics;
-			unsigned long        SizeOfStackReserve;
-			unsigned long        SizeOfStackCommit;
-			unsigned long        SizeOfHeapReserve;
-			unsigned long        SizeOfHeapCommit;
-			unsigned long        LoaderFlags;
-			unsigned long        NumberOfRvaAndSizes;
-			IMAGE_DATA_DIRECTORY DataDirectory[16];
+			unsigned short       magic;
+			unsigned char        major_linker_version;
+			unsigned char        minor_linker_version;
+			unsigned long        size_of_code;
+			unsigned long        size_of_initialized_data;
+			unsigned long        size_of_uninitialized_data;
+			unsigned long        address_of_entry_point;
+			unsigned long        base_of_code;
+			unsigned long        base_of_data;
+			unsigned long        image_base;
+			unsigned long        section_alignment;
+			unsigned long        file_alignment;
+			unsigned short       major_operating_system_version;
+			unsigned short       minor_operation_system_version;
+			unsigned short       major_image_version;
+			unsigned short       minor_image_version;
+			unsigned short       major_subsystem_version;
+			unsigned short       minor_subsystem_version;
+			unsigned long        win32_version_value;
+			unsigned long        size_of_image;
+			unsigned long        size_of_headers;
+			unsigned long        check_sum;
+			unsigned short       subsystem;
+			unsigned short       dll_characteristics;
+			unsigned long        size_of_stack_reserve;
+			unsigned long        size_of_stack_commit;
+			unsigned long        size_of_heap_reserve;
+			unsigned long        size_of_heap_commit;
+			unsigned long        loader_flags;
+			unsigned long        number_of_rva_and_sizes;
+			IMAGE_DATA_DIRECTORY data_directory[16];
 		} IMAGE_OPTIONAL_HEADER32, * PIMAGE_OPTIONAL_HEADER32;
 
 		typedef struct _IMAGE_NT_HEADERS {
@@ -227,9 +227,9 @@ namespace lazy_import {
 #elif defined(_M_IX86)
 			using IMAGE_OPT_HEADER_ARCH = IMAGE_OPTIONAL_HEADER32;
 #endif
-			unsigned long Signature;
-			IMAGE_FILE_HEADER FileHeader;
-			IMAGE_OPT_HEADER_ARCH OptionalHeader;
+			unsigned long signature;
+			IMAGE_FILE_HEADER file_header;
+			IMAGE_OPT_HEADER_ARCH optional_header;
 		} IMAGE_NT_HEADERS, * PIMAGE_NT_HEADERS;
 	}
 
@@ -322,18 +322,18 @@ namespace lazy_import {
 		LAZY_IMPORT_FORCEINLINE const ::lazy_import::PE::IMAGE_NT_HEADERS::IMAGE_OPT_HEADER_ARCH* optional_header(
 			pointer_t module_base) noexcept
 		{
-			return &nt_header(module_base)->OptionalHeader;
+			return &nt_header(module_base)->optional_header;
 		}
 
 		LAZY_IMPORT_FORCEINLINE const pointer_t dll_base(
 			::lazy_import::PE::_LDR_DATA_TABLE_ENTRY* table_entry) noexcept
 		{
-			return reinterpret_cast<pointer_t>(table_entry->DllBase);
+			return reinterpret_cast<pointer_t>(table_entry->dll_base);
 		}
 
 		LAZY_IMPORT_FORCEINLINE ::lazy_import::PE::PEB_LDR_DATA* loader_data() noexcept
 		{
-			return reinterpret_cast<::lazy_import::PE::PEB_LDR_DATA*>(get_ppeb()->LoaderData);
+			return reinterpret_cast<::lazy_import::PE::PEB_LDR_DATA*>(get_ppeb()->loader_data);
 		}
 	}
 
@@ -346,26 +346,26 @@ namespace lazy_import {
 			LAZY_IMPORT_FORCEINLINE module_export_info(
 				const_pointer_t base) noexcept : m_base(base)
 			{
-				const auto export_dir_data = ::lazy_import::utils::nt_header(base)->OptionalHeader.DataDirectory[0];
-				m_export_dir = reinterpret_cast<const ::lazy_import::PE::PIMAGE_EXPORT_DIRECTORY>(base + export_dir_data.VirtualAddress);
+				const auto export_dir_data = ::lazy_import::utils::nt_header(base)->optional_header.data_directory[0];
+				m_export_dir = reinterpret_cast<const ::lazy_import::PE::PIMAGE_EXPORT_DIRECTORY>(base + export_dir_data.virtual_address);
 			}
 
 			LAZY_IMPORT_FORCEINLINE unsigned long size() const noexcept 
 			{ 
-				return m_export_dir->NumberOfNames;
+				return m_export_dir->number_of_names;
 			}
 
 			LAZY_IMPORT_FORCEINLINE const char* const name(
 				unsigned int iterator) const noexcept
 			{
-				return reinterpret_cast<const char*>(m_base + reinterpret_cast<const unsigned long*>(m_base + m_export_dir->AddressOfNames)[iterator]);
+				return reinterpret_cast<const char*>(m_base + reinterpret_cast<const unsigned long*>(m_base + m_export_dir->address_of_names)[iterator]);
 			}
 
 			LAZY_IMPORT_FORCEINLINE const_pointer_t address(
 				unsigned int iterator) const noexcept
 			{
-				const auto rva_table = reinterpret_cast<unsigned long*>(m_base + m_export_dir->AddressOfFunctions);
-				const auto ord_table = reinterpret_cast<unsigned short*>(m_base + m_export_dir->AddressOfNameOrdinals);
+				const auto rva_table = reinterpret_cast<unsigned long*>(m_base + m_export_dir->address_of_functions);
+				const auto ord_table = reinterpret_cast<unsigned short*>(m_base + m_export_dir->address_of_name_ordinals);
 				return m_base + rva_table[ord_table[iterator]];
 			}
 
@@ -380,8 +380,8 @@ namespace lazy_import {
 #endif
 				}
 
-				if (::lazy_import::utils::nt_header(m_base)->OptionalHeader.Magic == IMAGE_NT_OPTIONAL_HDR_MAGIC &&
-					::lazy_import::utils::optional_header(m_base)->DataDirectory[0].Size <= 0ul)
+				if (::lazy_import::utils::nt_header(m_base)->optional_header.magic == IMAGE_NT_OPTIONAL_HDR_MAGIC &&
+					::lazy_import::utils::optional_header(m_base)->data_directory[0].size <= 0ul)
 				{
 					return false;
 				}
@@ -403,14 +403,14 @@ namespace lazy_import {
 			LAZY_IMPORT_FORCEINLINE const_pointer_t find_import(
 				const_pointer_t import_hash) noexcept(LAZY_IMPORT_EXCEPTION_HANDLING)
 			{
-				auto entry = &::lazy_import::utils::loader_data()->InLoadOrderModuleList;
+				auto entry = &::lazy_import::utils::loader_data()->in_load_order_module_list;
 				pointer_t import_address = 0;
 
-				for (auto i = entry->Flink; i != entry; i = i->Flink)
+				for (auto i = entry->flink; i != entry; i = i->flink)
 				{
-					auto module_data = CONTAINING_RECORD(i, ::lazy_import::PE::LDR_DATA_TABLE_ENTRY, InLoadOrderLinks);
+					auto module_data = CONTAINING_RECORD(i, ::lazy_import::PE::LDR_DATA_TABLE_ENTRY, in_load_order_links);
 
-					if (module_data->BaseDllName.Buffer == nullptr)
+					if (module_data->base_dll_name.buffer == nullptr)
 						continue;
 
 					pointer_t module_base = ModuleHash != 0 ? find_target_module(module_data) : ::lazy_import::utils::dll_base(module_data);
@@ -448,7 +448,7 @@ namespace lazy_import {
 			LAZY_IMPORT_FORCEINLINE const_pointer_t find_target_module(
 				::lazy_import::PE::LDR_DATA_TABLE_ENTRY* module_data) noexcept
 			{
-				if (ModuleHash == ::lazy_import::hash::hash<wchar_t>(module_data->BaseDllName.Buffer))
+				if (ModuleHash == ::lazy_import::hash::hash<wchar_t>(module_data->base_dll_name.buffer))
 					return ::lazy_import::utils::dll_base(module_data);
 
 				return 0;
