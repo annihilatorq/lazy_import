@@ -55,6 +55,7 @@ int main(void)
 | `LAZY_IMPORT_DISABLE_FORCEINLINE`         | disables force inlining                                                                 |
 | `LAZY_IMPORT_DISABLE_EXCEPTIONS`          | disables all exceptions and returns 0 if the function fails.                            |
 | `LAZY_IMPORT_CASE_INSENSITIVE`            | disables case sensitivity in the hashing algorithm                                      |
+| `LAZY_IMPORT_DISABLE_CACHING`             | completely disables caching of any calls.                                               |
 
 > [!WARNING]\
 > If you use this utility to protect imports from reverse engineering, be careful when calling redirected (forwarded) exports, because when you search for the necessary string, it will be easy to see it in runtime. If you already know which main export follows the forward declaration - call it, it will also save you from resource overhead.
