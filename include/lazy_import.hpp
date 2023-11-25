@@ -6,6 +6,10 @@
 #define LI(type, name) ::lazy_import::internals::lazy_import_internals<type>(LAZY_IMPORT_COMPILETIME_HASH(#name))
 #define LI_FROM(type, module_name, import_name) ::lazy_import::internals::lazy_import_internals<type, LAZY_IMPORT_COMPILETIME_HASH(module_name)>(LAZY_IMPORT_COMPILETIME_HASH(#import_name))
 
+#ifndef LAZY_IMPORT_DISABLE_CACHING
+#include <unordered_map>
+#endif
+
 #ifndef LAZY_IMPORT_DISABLE_EXCEPTIONS
 #define LAZY_IMPORT_EXCEPTION_HANDLING false
 #else
@@ -83,7 +87,7 @@ namespace lazy_import {
 				unsigned long check_sum;
 				void* reserved6;
 			};
-			unsigned long          time_date_stamp;
+			unsigned long time_date_stamp;
 		} LDR_DATA_TABLE_ENTRY, * PLDR_DATA_TABLE_ENTRY;
 
 		typedef struct _PEB_LDR_DATA {
@@ -298,6 +302,22 @@ namespace lazy_import {
 
 	namespace utils
 	{
+		namespace string
+		{
+			LAZY_IMPORT_FORCEINLINE const char* strtrim(
+				const char* str, char delimiter)
+			{
+				const char* result = str;
+				while (*str != '\0') {
+					if (*str == delimiter) {
+						result = str + 1;
+					}
+					str++;
+				}
+				return result;
+			}
+		}
+
 		LAZY_IMPORT_FORCEINLINE const ::lazy_import::PE::PEB* get_ppeb() noexcept
 		{
 #if defined(_M_X64)
@@ -335,6 +355,15 @@ namespace lazy_import {
 		{
 			return reinterpret_cast<::lazy_import::PE::PEB_LDR_DATA*>(get_ppeb()->loader_data);
 		}
+
+#ifndef LAZY_IMPORT_DISABLE_CACHING
+		template <class _Type1, class _Type2 = _Type1>
+		LAZY_IMPORT_FORCEINLINE const bool value_stored_in_map(
+			std::unordered_map<_Type1, _Type2> _map, _Type1 _key) noexcept
+		{
+			return (_map.find(_key) != _map.end());
+		}
+#endif
 	}
 
 	namespace detail
@@ -389,6 +418,17 @@ namespace lazy_import {
 				return true;
 			}
 
+			LAZY_IMPORT_FORCEINLINE bool is_forwarded_export(const_pointer_t ptr) noexcept
+			{
+				::lazy_import::PE::IMAGE_DATA_DIRECTORY export_dir = 
+					::lazy_import::utils::optional_header(m_base)->data_directory[0];
+
+				const_pointer_t export_table_start = m_base + export_dir.virtual_address;
+				const_pointer_t export_table_end = export_table_start + export_dir.size;
+
+				return (ptr >= export_table_start) && (ptr < export_table_end);
+			}
+
 		private:
 			const_pointer_t m_base;
 			const ::lazy_import::PE::IMAGE_EXPORT_DIRECTORY* m_export_dir;
@@ -404,6 +444,7 @@ namespace lazy_import {
 				const_pointer_t import_hash) noexcept(LAZY_IMPORT_EXCEPTION_HANDLING)
 			{
 				auto entry = &::lazy_import::utils::loader_data()->in_load_order_module_list;
+				bool forward_check = false;
 				pointer_t import_address = 0;
 
 				for (auto i = entry->flink; i != entry; i = i->flink)
@@ -426,6 +467,14 @@ namespace lazy_import {
 					for (unsigned int i = 0; i < exp.size(); ++i) {
 						if (import_hash == LAZY_IMPORT_RUNTIME_HASH(exp.name(i))) {
 							import_address = static_cast<const_pointer_t>(exp.address(i));
+
+							// HeapAlloc, HeapReAlloc, HeapFree, etc.
+							if (exp.is_forwarded_export(import_address)) {
+								auto str = reinterpret_cast<const char*>(import_address);
+								auto substr = ::lazy_import::utils::string::strtrim(str, '.');
+
+								return find_import(LAZY_IMPORT_RUNTIME_HASH(substr));
+							}
 						}
 					}
 
@@ -475,24 +524,30 @@ namespace lazy_import {
 			template<class... Args>
 			LAZY_IMPORT_FORCEINLINE ReturnType cached_call(Args... args) noexcept
 			{
-				pointer_t& cache_addr = cached_address();
-				if (cache_addr == 0) {
-					detail::import_enumerator<ModuleHash> e;
-					cache_addr = e.find_import(m_import_hash);
+				pointer_t import_address = 0;
+#ifndef LAZY_IMPORT_DISABLE_CACHING
+				if (::lazy_import::utils::value_stored_in_map(m_ptr_map, m_import_hash)) {
+					import_address = m_ptr_map.at(m_import_hash);
 				}
+				else
+				{
+					detail::import_enumerator<ModuleHash> e;
+					import_address = e.find_import(m_import_hash);
+					m_ptr_map.insert(std::make_pair(m_import_hash, import_address));
+				}
+#else
+				detail::import_enumerator<ModuleHash> e;
+				import_address = e.find_import(m_import_hash);
+#endif
 
-				return reinterpret_cast<ReturnType(__stdcall*)(Args...)>(cache_addr)(args...);
+				return reinterpret_cast<ReturnType(__stdcall*)(Args...)>(import_address)(args...);
 			}
 
 		private:
 			unsigned int m_import_hash = 0;
-
-			template<class T = pointer_t>
-			LAZY_IMPORT_FORCEINLINE static T& cached_address() noexcept
-			{
-				static T cached_val = 0;
-				return cached_val;
-			}
+#ifndef LAZY_IMPORT_DISABLE_CACHING
+			static inline std::unordered_map<unsigned int, pointer_t> m_ptr_map;
+#endif
 		};
 	}
 }
