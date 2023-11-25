@@ -4,6 +4,7 @@ Lazy Import technique implementation to call any import in the runtime. It will 
 The implementation also includes call caching for speed and optimization purposes.
 
 Currently supports and tested only: MSVC compiler, x64-x86 Debug/Release, `std::c++14 - std::c++23`
+Supports forwarded imports like `HeapAlloc()` etc.
 
 ### Quick example
 ```cpp
@@ -54,6 +55,9 @@ int main(void)
 | `LAZY_IMPORT_DISABLE_FORCEINLINE`         | disables force inlining                                                                 |
 | `LAZY_IMPORT_DISABLE_EXCEPTIONS`          | disables all exceptions and returns 0 if the function fails.                            |
 | `LAZY_IMPORT_CASE_INSENSITIVE`            | disables case sensitivity in the hashing algorithm                                      |
+
+> [!WARNING]\
+> If you use this utility to protect imports from reverse engineering, be careful when calling redirected (forwarded) exports, because when you search for the necessary string, it will be easy to see it in runtime. If you already know which main export follows the forward declaration - call it, it will also save you from resource overhead.
 
 ## IDA Pro Pseudocode Output
 Build configuration: MSVC compiler, Release x64, std::c++23 std::c17, /O2 flag.
