@@ -475,6 +475,8 @@ namespace lazy_import {
 
 								return find_import(LAZY_IMPORT_RUNTIME_HASH(substr));
 							}
+
+							break;
 						}
 					}
 
