@@ -1,5 +1,8 @@
 # lazy_import
 
+> [!WARNING]\
+> Deprecation warning. This repository is deprecated and no longer supported, use the newer, stable, convenient and extended version of this repository - https://github.com/annihilatorq/shadow_syscall
+
 Lazy Import technique implementation to call any import in the runtime. It will be very useful for calling undocumented functions, as well as for making it difficult for a reverse engineer to analyze your binary file, more specifically - calls to various APIs.
 The implementation also includes call caching for speed and optimization purposes.
 
